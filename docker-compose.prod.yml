@@ -1,0 +1,44 @@
+# Production deploy (Hetzner box, shared with many other projects — tight on
+# RAM, so every service is memory/CPU-capped and no port here collides with
+# anything else already running on the host).
+#
+# Usage: docker compose -f docker-compose.prod.yml up -d --build
+#
+# Frontend → http://<host>:8095
+# Backend  → http://<host>:8096  (API docs at /docs)
+services:
+  api:
+    build: ./apps/api
+    image: vocab-trainer-api
+    ports:
+      - "8096:8000"
+    environment:
+      VOCAB_DATABASE_URL: sqlite+aiosqlite:///./data/vocab.db
+      VOCAB_LLM_PROVIDER: none
+    # Secrets (VOCAB_PRONUNCIATION_PROVIDER, VOCAB_GEMINI_API_KEY, ...) live in
+    # .env.prod on the server only — never synced into this repo.
+    env_file:
+      - path: .env.prod
+        required: false
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+    mem_limit: 256m
+    cpus: 1.0
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/healthz')"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  web:
+    build: ./apps/web
+    image: vocab-trainer-web
+    ports:
+      - "8095:80"
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+    mem_limit: 64m
+    cpus: 0.5

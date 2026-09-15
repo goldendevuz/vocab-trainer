@@ -62,6 +62,7 @@ from vocab_api.infrastructure.persistence.sentence_attempt_repo import (
     SqlSentenceAttemptRepository,
 )
 from vocab_api.infrastructure.pronunciation.cloud_stt_scorer import CloudSttScorer
+from vocab_api.infrastructure.pronunciation.gemini_stt_scorer import GeminiSttScorer
 from vocab_api.infrastructure.pronunciation.null_scorer import NullScorer
 from vocab_api.infrastructure.pronunciation.rtx_gop_scorer import RtxGopScorer
 from vocab_api.infrastructure.question_bank import JsonQuestionBank, load_interview_questions
@@ -167,6 +168,14 @@ class Container:
                 self._settings.pronunciation_rtx_url,
                 self._settings.pronunciation_timeout,
                 connect_timeout=self._settings.pronunciation_connect_timeout,
+            )
+        if provider == "gemini":
+            if not self._settings.gemini_api_key:
+                raise ValueError("VOCAB_GEMINI_API_KEY is required for the gemini provider")
+            return GeminiSttScorer(
+                self._settings.gemini_api_key,
+                self._settings.gemini_model,
+                self._settings.pronunciation_timeout,
             )
         raise ValueError(f"pronunciation provider {provider!r} is not wired")
 

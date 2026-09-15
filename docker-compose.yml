@@ -1,0 +1,39 @@
+# One command to run the whole app: `docker compose up -d --build`.
+# Frontend → http://localhost:5173  (nginx proxies /api → the api service)
+# Backend  → http://localhost:8010  (API docs at /docs)
+#
+# No authentication/login exists in this app — it's a single-user, local
+# vocab trainer with no user accounts.
+services:
+  api:
+    build: ./apps/api
+    image: vocab-trainer-api
+    container_name: vocab-trainer-api
+    ports:
+      - "8010:8000"
+    environment:
+      VOCAB_DATABASE_URL: sqlite+aiosqlite:///./data/vocab.db
+      VOCAB_LLM_PROVIDER: none
+      VOCAB_PRONUNCIATION_PROVIDER: none
+    volumes:
+      - api-data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/healthz')"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  web:
+    build: ./apps/web
+    image: vocab-trainer-web
+    container_name: vocab-trainer-web
+    ports:
+      - "5173:80"
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  api-data:
