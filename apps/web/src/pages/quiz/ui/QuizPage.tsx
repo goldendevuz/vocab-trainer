@@ -10,7 +10,7 @@ export function QuizPage() {
     <div className="flex flex-col gap-4">
       <Link
         to={`/learn/${moduleId}`}
-        className="text-sm font-bold text-muted-foreground hover:text-foreground"
+        className="w-fit text-sm font-bold text-muted-foreground transition-colors hover:text-foreground"
       >
         {t("learn.backToLesson")}
       </Link>

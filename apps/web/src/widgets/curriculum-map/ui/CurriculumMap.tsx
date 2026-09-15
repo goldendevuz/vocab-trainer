@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useCurriculumMap } from "@/entities/curriculum";
 import type { CurriculumModule } from "@/shared/api";
 import { useI18n } from "@/shared/lib/i18n";
+import { Loader } from "@/shared/ui/loader";
 
 const LEVEL_LABEL_KEYS: Record<string, string> = {
   A1: "learn.levelA1",
@@ -69,13 +70,17 @@ function ModuleCard({ module }: { module: CurriculumModule }) {
   );
 
   if (module.availability !== "available") {
-    return <div className="rounded-3xl border border-border bg-card p-4 opacity-70">{content}</div>;
+    return (
+      <div className="rounded-3xl border border-dashed border-border bg-card/60 p-4 opacity-70">
+        {content}
+      </div>
+    );
   }
 
   return (
     <Link
       to={`/learn/${module.id}`}
-      className="block rounded-3xl border border-border bg-card p-4 transition-colors hover:border-primary hover:bg-tint-lavender/40"
+      className="block rounded-3xl border border-border bg-card p-4 shadow-sm shadow-foreground/[0.03] transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:bg-tint-lavender/40 hover:shadow-md hover:shadow-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
     >
       {content}
     </Link>
@@ -112,13 +117,13 @@ export function CurriculumMap() {
         <div className="flex shrink-0 items-center gap-2">
           <Link
             to="/placement"
-            className="rounded-full border border-border px-4 py-2 text-sm font-extrabold text-muted-foreground hover:text-foreground"
+            className="rounded-full border border-border px-4 py-2 text-sm font-extrabold text-muted-foreground transition-colors hover:border-primary/30 hover:bg-muted hover:text-foreground"
           >
             {t("learn.takePlacement")}
           </Link>
           <Link
             to="/learn/skills"
-            className="rounded-full border border-border px-4 py-2 text-sm font-extrabold text-muted-foreground hover:text-foreground"
+            className="rounded-full border border-border px-4 py-2 text-sm font-extrabold text-muted-foreground transition-colors hover:border-primary/30 hover:bg-muted hover:text-foreground"
           >
             {t("learn.skillReviews")}
           </Link>
@@ -126,9 +131,11 @@ export function CurriculumMap() {
       </header>
 
       {map.isLoading ? (
-        <p className="text-sm font-semibold text-muted-foreground">{t("common.loading")}</p>
+        <div className="rounded-3xl border border-border bg-card p-6">
+          <Loader label={t("common.loading")} />
+        </div>
       ) : map.error ? (
-        <p className="rounded-2xl bg-red-50 p-4 text-sm font-semibold text-red-700">
+        <p className="rounded-2xl border border-destructive/20 bg-destructive/5 p-4 text-sm font-semibold text-destructive">
           {t("misc.error")}
         </p>
       ) : (

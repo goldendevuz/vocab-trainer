@@ -131,29 +131,33 @@ export function PronounceControls({
 
       {heard !== null &&
         (matched ? (
-          <div className="flex flex-col gap-1 text-sm">
+          <div className="flex flex-col gap-1.5 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-3 text-sm">
             {grammar.state === "pending" ? (
               <>
-                <p>{t("pronounce.matched")}</p>
+                <p className="font-bold text-emerald-700">{t("pronounce.matched")}</p>
                 <Loader label={t("pronounce.checkingGrammar")} />
               </>
             ) : grammar.state === "checked" && grammar.feedback.verdict === "needs_work" ? (
               <>
-                <p>{t("pronounce.matched")}</p>
-                <p className="text-amber-600">{grammar.feedback.feedback}</p>
+                <p className="font-bold text-emerald-700">{t("pronounce.matched")}</p>
+                <p className="font-semibold text-amber-600">{grammar.feedback.feedback}</p>
                 {grammar.feedback.corrected && (
-                  <p>{t("pronounce.sayLike").replace("{text}", grammar.feedback.corrected)}</p>
+                  <p className="text-muted-foreground">
+                    {t("pronounce.sayLike").replace("{text}", grammar.feedback.corrected)}
+                  </p>
                 )}
                 {grammar.feedback.example && (
-                  <p>{t("pronounce.nativeWay").replace("{text}", grammar.feedback.example)}</p>
+                  <p className="text-muted-foreground">
+                    {t("pronounce.nativeWay").replace("{text}", grammar.feedback.example)}
+                  </p>
                 )}
               </>
             ) : (
-              <p>{t("pronounce.matched")}</p>
+              <p className="font-bold text-emerald-700">{t("pronounce.matched")}</p>
             )}
           </div>
         ) : (
-          <p className="text-sm">
+          <p className="rounded-2xl border border-destructive/20 bg-destructive/5 p-3 text-sm font-semibold text-destructive">
             {t("pronounce.notMatched").replace(
               "{heard}",
               heard?.trim() ? heard : t("pronounce.heardNothing"),
@@ -175,25 +179,24 @@ export function PronounceControls({
             />
           </div>
           {example.isLoading && <Loader label={t("practice.hintLoading")} />}
-          {sentenceHeard !== null && (
-            <div className="flex flex-col gap-1 text-sm">
-              {sentenceMatched ? (
-                <p className="text-green-700">{t("pronounce.sentenceMatched")}</p>
-              ) : (
-                <>
-                  <p className="text-red-600">{t("pronounce.sentenceNotMatched")}</p>
-                  {sentenceResult && sentenceResult.missed.length > 0 && (
-                    <p className="text-muted-foreground">
-                      {t("pronounce.sentenceMissed")} {sentenceResult.missed.join(", ")}
-                    </p>
-                  )}
+          {sentenceHeard !== null &&
+            (sentenceMatched ? (
+              <p className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-2.5 text-sm font-bold text-emerald-700">
+                {t("pronounce.sentenceMatched")}
+              </p>
+            ) : (
+              <div className="flex flex-col gap-1 rounded-xl border border-destructive/20 bg-destructive/5 p-2.5 text-sm">
+                <p className="font-bold text-destructive">{t("pronounce.sentenceNotMatched")}</p>
+                {sentenceResult && sentenceResult.missed.length > 0 && (
                   <p className="text-muted-foreground">
-                    {t("pronounce.sentenceHeard")} "{sentenceHeard.trim()}"
+                    {t("pronounce.sentenceMissed")} {sentenceResult.missed.join(", ")}
                   </p>
-                </>
-              )}
-            </div>
-          )}
+                )}
+                <p className="text-muted-foreground">
+                  {t("pronounce.sentenceHeard")} "{sentenceHeard.trim()}"
+                </p>
+              </div>
+            ))}
         </div>
       )}
     </div>

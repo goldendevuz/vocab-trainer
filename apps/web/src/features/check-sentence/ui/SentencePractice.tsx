@@ -40,8 +40,8 @@ export function SentencePractice({
 
   return (
     <div className="flex flex-col gap-3">
-      <p>
-        {t("practice.writeSentence")} <span className="font-semibold">{word}</span>:
+      <p className="text-sm font-bold text-muted-foreground">
+        {t("practice.writeSentence")} <span className="font-extrabold text-foreground">{word}</span>:
       </p>
       <div className="flex gap-2">
         <Textarea
@@ -71,14 +71,14 @@ export function SentencePractice({
       {(check.isPending || example.isPending) && <Loader />}
       {feedback && (
         <div
-          className={`rounded-lg border p-4 text-sm ${
+          className={`rounded-2xl border p-4 text-sm ${
             feedback.verdict === "ok"
-              ? "border-green-200 bg-green-50"
-              : "border-amber-200 bg-amber-50"
+              ? "border-green-500/20 bg-green-500/5"
+              : "border-amber-500/20 bg-amber-500/5"
           }`}
         >
           <span
-            className={`text-base font-semibold ${
+            className={`text-base font-black ${
               feedback.verdict === "ok" ? "text-green-700" : "text-amber-700"
             }`}
           >
@@ -90,17 +90,17 @@ export function SentencePractice({
           )}
 
           {feedback.corrected && feedback.verdict === "needs_work" && (
-            <div className="mt-2 rounded-md bg-foreground/10 px-3 py-2">
-              <span className="text-xs font-medium text-muted-foreground">
+            <div className="mt-2 rounded-xl bg-foreground/10 px-3 py-2">
+              <span className="text-xs font-bold text-muted-foreground">
                 {t("feedback.correctedLabel")}
               </span>
-              <p className="mt-0.5 font-medium text-foreground">{feedback.corrected}</p>
+              <p className="mt-0.5 font-bold text-foreground">{feedback.corrected}</p>
             </div>
           )}
 
           {feedback.example && (
             <p className="mt-2 text-muted-foreground">
-              <span className="text-xs font-medium">{t("practice.exampleLabel")}</span>{" "}
+              <span className="text-xs font-bold">{t("practice.exampleLabel")}</span>{" "}
               {feedback.example}
             </p>
           )}

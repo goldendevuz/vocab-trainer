@@ -5,6 +5,7 @@ import { useTakeQuiz } from "@/features/take-quiz";
 import type { CurriculumQuizGrade, CurriculumQuizItem } from "@/shared/api";
 import { useI18n } from "@/shared/lib/i18n";
 import { Button } from "@/shared/ui/button";
+import { Loader } from "@/shared/ui/loader";
 import { SpeakButton } from "@/shared/ui/speak-button";
 
 type Answers = Record<string, string>;
@@ -18,13 +19,17 @@ export function QuizRunner({ moduleId }: { moduleId: string }) {
   const [result, setResult] = useState<CurriculumQuizGrade | null>(null);
 
   if (quiz.isLoading) {
-    return <p className="text-sm font-semibold text-muted-foreground">{t("common.loading")}</p>;
+    return (
+      <div className="rounded-3xl border border-border bg-card p-5">
+        <Loader label={t("common.loading")} />
+      </div>
+    );
   }
   if (quiz.error || !quiz.data) {
     return (
-      <p className="rounded-2xl bg-red-50 p-4 text-sm font-semibold text-red-700">
-        {t("misc.error")}
-      </p>
+      <div className="rounded-3xl border border-destructive/20 bg-destructive/5 p-5">
+        <p className="text-sm font-bold text-destructive">{t("misc.error")}</p>
+      </div>
     );
   }
 
@@ -50,7 +55,7 @@ export function QuizRunner({ moduleId }: { moduleId: string }) {
 
   return (
     <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
-      <header className="flex flex-col gap-3 rounded-3xl border border-border bg-card p-6">
+      <header className="flex flex-col gap-3 rounded-3xl border border-border bg-card p-6 shadow-sm shadow-foreground/[0.03] transition-shadow hover:shadow-md hover:shadow-foreground/[0.05]">
         <div className="flex items-center justify-between gap-3">
           <h1 className="text-2xl font-black tracking-tight text-foreground">{t("quiz.title")}</h1>
           <span className="rounded-full bg-muted px-3 py-1 text-xs font-extrabold text-muted-foreground">
@@ -108,7 +113,7 @@ function QuizItemCard({
     return <ListeningItem item={item} number={number} value={value} onSelect={onSelect} />;
   }
   return (
-    <div className="flex flex-col gap-3 rounded-3xl border border-border bg-card p-6">
+    <div className="flex flex-col gap-3 rounded-3xl border border-border bg-card p-6 shadow-sm shadow-foreground/[0.03] transition-shadow hover:shadow-md hover:shadow-foreground/[0.05]">
       <ItemHeader item={item} number={number} />
       <label
         htmlFor={`quiz-input-${item.id}`}
@@ -161,7 +166,7 @@ function WordOrderItem({
   };
 
   return (
-    <div className="flex flex-col gap-3 rounded-3xl border border-border bg-card p-6">
+    <div className="flex flex-col gap-3 rounded-3xl border border-border bg-card p-6 shadow-sm shadow-foreground/[0.03] transition-shadow hover:shadow-md hover:shadow-foreground/[0.05]">
       <ItemHeader item={item} number={number} />
       <p className="text-sm font-black uppercase tracking-wider text-muted-foreground">
         {t("quiz.type.word_order")}
@@ -215,7 +220,7 @@ function ListeningItem({
 
   if (item.options) {
     return (
-      <div className="flex flex-col gap-3 rounded-3xl border border-border bg-card p-6">
+      <div className="flex flex-col gap-3 rounded-3xl border border-border bg-card p-6 shadow-sm shadow-foreground/[0.03] transition-shadow hover:shadow-md hover:shadow-foreground/[0.05]">
         <div className="flex flex-wrap items-center gap-2">
           <span className="rounded-full bg-tint-blue px-3 py-1 text-xs font-extrabold text-secondary-foreground">
             {t("quiz.question").replace("{n}", String(number))}
@@ -257,7 +262,7 @@ function ListeningItem({
   }
 
   return (
-    <div className="flex flex-col gap-3 rounded-3xl border border-border bg-card p-6">
+    <div className="flex flex-col gap-3 rounded-3xl border border-border bg-card p-6 shadow-sm shadow-foreground/[0.03] transition-shadow hover:shadow-md hover:shadow-foreground/[0.05]">
       <div className="flex flex-wrap items-center gap-2">
         <span className="rounded-full bg-tint-blue px-3 py-1 text-xs font-extrabold text-secondary-foreground">
           {t("quiz.question").replace("{n}", String(number))}
@@ -316,7 +321,7 @@ function McqItem({
   }, [onSelect, item.id, options.length]);
 
   return (
-    <div className="flex flex-col gap-3 rounded-3xl border border-border bg-card p-6">
+    <div className="flex flex-col gap-3 rounded-3xl border border-border bg-card p-6 shadow-sm shadow-foreground/[0.03] transition-shadow hover:shadow-md hover:shadow-foreground/[0.05]">
       <ItemHeader item={item} number={number} />
       <p className="text-sm font-black uppercase tracking-wider text-muted-foreground">
         {t("quiz.type.mcq")}
@@ -370,7 +375,7 @@ function QuizResults({ result, onBack }: { result: CurriculumQuizGrade; onBack: 
 
   return (
     <div className="flex flex-col gap-6">
-      <header className="flex flex-col gap-3 rounded-3xl border border-border bg-card p-6">
+      <header className="flex flex-col gap-3 rounded-3xl border border-border bg-card p-6 shadow-sm shadow-foreground/[0.03] transition-shadow hover:shadow-md hover:shadow-foreground/[0.05]">
         <h1 className="text-2xl font-black tracking-tight text-foreground">
           {t("quiz.resultTitle")}
         </h1>
@@ -403,10 +408,10 @@ function QuizResults({ result, onBack }: { result: CurriculumQuizGrade; onBack: 
         {result.items.map((item, index) => (
           <li
             key={item.item_id}
-            className="flex flex-col gap-2 rounded-3xl border border-border bg-card p-6"
+            className="flex flex-col gap-2 rounded-3xl border border-border bg-card p-6 shadow-sm shadow-foreground/[0.03] transition-shadow hover:shadow-md hover:shadow-foreground/[0.05]"
           >
             <div className="flex items-center gap-2 text-sm font-black">
-              <span aria-hidden className={item.correct ? "text-primary" : "text-red-500"}>
+              <span aria-hidden className={item.correct ? "text-primary" : "text-destructive"}>
                 {item.correct ? "✓" : "✗"}
               </span>
               <span className="text-foreground">

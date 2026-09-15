@@ -8,6 +8,7 @@ import { useI18n } from "@/shared/lib/i18n";
 import { useRevealShortcut } from "@/shared/lib/use-reveal-shortcut";
 import { Button } from "@/shared/ui/button";
 import { CardContent, Card as UICard } from "@/shared/ui/card";
+import { Loader } from "@/shared/ui/loader";
 
 export function SkillReviewSession() {
   const { t } = useI18n();
@@ -28,12 +29,18 @@ export function SkillReviewSession() {
 
   useRevealShortcut(!revealed && !complete, () => setRevealed(true));
 
-  if (session === null) return <p>{t("common.loading")}</p>;
+  if (session === null) {
+    return (
+      <div className="rounded-3xl border border-border bg-card p-5">
+        <Loader label={t("common.loading")} />
+      </div>
+    );
+  }
   const item = session[index];
 
   if (!item || complete) {
     return (
-      <div className="flex flex-col items-center gap-6 rounded-3xl border border-border bg-card p-8 text-center">
+      <div className="flex flex-col items-center gap-6 rounded-3xl border border-border bg-card p-8 text-center shadow-sm shadow-foreground/[0.03]">
         <span className="text-5xl">🎉</span>
         <p className="text-2xl font-black tracking-tight">
           {reviewed > 0 ? t("review.summary") : t("review.caughtUp")}

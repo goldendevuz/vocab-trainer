@@ -6,6 +6,7 @@ import type { PlacementGrade, PlacementItem } from "@/shared/api";
 import { useI18n } from "@/shared/lib/i18n";
 import { Button } from "@/shared/ui/button";
 import { CardContent, Card as UICard } from "@/shared/ui/card";
+import { Loader } from "@/shared/ui/loader";
 
 type Answers = Record<string, string>;
 
@@ -19,13 +20,17 @@ export function PlacementRunner() {
   const [result, setResult] = useState<PlacementGrade | null>(null);
 
   if (placement.isLoading) {
-    return <p className="text-sm font-semibold text-muted-foreground">{t("common.loading")}</p>;
+    return (
+      <div className="rounded-3xl border border-border bg-card p-5">
+        <Loader label={t("common.loading")} />
+      </div>
+    );
   }
   if (placement.error || !placement.data) {
     return (
-      <p className="rounded-2xl bg-red-50 p-4 text-sm font-semibold text-red-700">
-        {t("misc.error")}
-      </p>
+      <div className="rounded-3xl border border-destructive/20 bg-destructive/5 p-5">
+        <p className="text-sm font-bold text-destructive">{t("misc.error")}</p>
+      </div>
     );
   }
 
@@ -70,7 +75,7 @@ export function PlacementRunner() {
 
   return (
     <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
-      <header className="flex flex-col gap-3 rounded-3xl border border-border bg-card p-6">
+      <header className="flex flex-col gap-3 rounded-3xl border border-border bg-card p-6 shadow-sm shadow-foreground/[0.03]">
         <div className="flex items-center justify-between gap-3">
           <h1 className="text-2xl font-black tracking-tight text-foreground">
             {t("placement.title")}
@@ -185,7 +190,7 @@ function PlacementResult({
   const correctCount = result.results.filter((r) => r.correct).length;
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex flex-col items-center gap-6 rounded-3xl border border-border bg-card p-8 text-center">
+      <div className="flex flex-col items-center gap-6 rounded-3xl border border-border bg-card p-8 text-center shadow-sm shadow-foreground/[0.03]">
         <span className="text-5xl">🎯</span>
         <p className="text-2xl font-black tracking-tight">{t("placement.doneTitle")}</p>
         <div className="flex flex-col items-center gap-2">
@@ -204,7 +209,7 @@ function PlacementResult({
         </p>
       </div>
 
-      <div className="flex flex-col gap-2 rounded-3xl border border-border bg-card p-4">
+      <div className="flex flex-col gap-2 rounded-3xl border border-border bg-card p-4 shadow-sm shadow-foreground/[0.03]">
         <h2 className="px-2 text-sm font-extrabold uppercase tracking-widest text-muted-foreground">
           {t("placement.reviewTitle")}
         </h2>
@@ -212,13 +217,15 @@ function PlacementResult({
           {result.results.map((r) => (
             <li
               key={r.item_id}
-              className="flex flex-col gap-1 rounded-2xl border bg-card p-3 text-left"
+              className="flex flex-col gap-1 rounded-2xl border border-border bg-card p-3 text-left"
             >
               <div className="flex items-start justify-between gap-3">
                 <p className="text-sm font-bold text-foreground">{r.prompt}</p>
                 <span
                   className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-extrabold ${
-                    r.correct ? "bg-emerald-100 text-emerald-700" : "bg-red-100 text-red-700"
+                    r.correct
+                      ? "bg-emerald-500/10 text-emerald-700"
+                      : "bg-destructive/10 text-destructive"
                   }`}
                 >
                   {r.correct ? t("placement.reviewOk") : t("placement.reviewMiss")}

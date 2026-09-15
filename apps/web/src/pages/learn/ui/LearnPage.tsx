@@ -1,13 +1,20 @@
 import { Link } from "react-router-dom";
 import { useCurriculumMap } from "@/entities/curriculum";
 import { useI18n } from "@/shared/lib/i18n";
+import { Loader } from "@/shared/ui/loader";
 import { CurriculumMap } from "@/widgets/curriculum-map";
 import { FocusList } from "@/widgets/focus-list";
 
 export function LearnPage() {
   const { t } = useI18n();
   const map = useCurriculumMap();
-  if (map.isLoading) return null;
+  if (map.isLoading) {
+    return (
+      <div className="rounded-3xl border border-border bg-card p-5">
+        <Loader label={t("common.loading")} />
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-8">

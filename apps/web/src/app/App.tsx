@@ -5,9 +5,7 @@ import {
   GraduationCap,
   MessageSquare,
   Mic,
-  Moon,
   Pencil,
-  Sun,
   Upload,
   User,
 } from "lucide-react";
@@ -55,7 +53,7 @@ function Logo() {
         height="28"
         viewBox="0 0 32 32"
         fill="none"
-        className="shrink-0"
+        className="shrink-0 drop-shadow-[0_1px_2px_rgba(113,92,255,0.35)]"
         aria-label="Elingo logo"
       >
         <path
@@ -76,7 +74,7 @@ function LevelBadge() {
   const map = useCurriculumMap();
   const level = map.data?.placement_level ?? null;
   return (
-    <span className="w-fit rounded-full bg-tint-lavender px-3 py-1 text-xs font-black tracking-wide text-secondary-foreground">
+    <span className="w-fit rounded-full bg-tint-lavender px-3 py-1 text-xs font-black tracking-wide text-secondary-foreground ring-1 ring-primary/10">
       {level ?? "—"}
     </span>
   );
@@ -99,9 +97,10 @@ function SidebarNav({
         <Link
           key={to}
           to={to}
-          className={`flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-extrabold transition-all ${
+          aria-current={active ? "page" : undefined}
+          className={`flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-extrabold transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 active:scale-[0.98] ${
             active
-              ? "bg-primary text-primary-foreground"
+              ? "bg-primary text-primary-foreground shadow-sm shadow-primary/30"
               : "text-muted-foreground hover:bg-muted hover:text-foreground"
           }`}
         >
@@ -123,7 +122,7 @@ function SidebarNav({
       <button
         type="button"
         onClick={() => setLocale(locale === "en" ? "ru" : "en")}
-        className="mt-1 flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-extrabold text-muted-foreground hover:bg-muted hover:text-foreground"
+        className="mt-1 flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-extrabold text-muted-foreground transition-colors duration-150 hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 active:scale-[0.98]"
         title={locale === "en" ? "Switch to Russian" : "Переключить на английский"}
       >
         <Globe className="size-4.5" strokeWidth={2.5} />
@@ -136,57 +135,30 @@ function SidebarNav({
 function AppShell() {
   const [deckId, setDeckId] = useState<number | null>(null);
   const decks = useDecks();
-  const { t, locale, setLocale } = useI18n();
+  const { locale, setLocale } = useI18n();
   const firstDeckId = decks.data?.[0]?.id ?? null;
-  const [dark, setDark] = useState(() => {
-    try {
-      return localStorage.getItem("vt_dark") === "true";
-    } catch {
-      return false;
-    }
-  });
 
   useEffect(() => {
     if (deckId === null && firstDeckId !== null) setDeckId(firstDeckId);
   }, [deckId, firstDeckId]);
 
-  useEffect(() => {
-    document.documentElement.classList.toggle("dark", dark);
-    try {
-      localStorage.setItem("vt_dark", String(dark));
-    } catch {}
-  }, [dark]);
-
   return (
     <BrowserRouter>
       <div className="flex min-h-screen">
         {/* Sidebar */}
-        <aside className="sticky top-0 flex h-screen w-60 shrink-0 flex-col gap-6 border-r border-sidebar-border bg-sidebar px-5 py-7">
+        <aside className="sticky top-0 flex h-screen w-60 shrink-0 flex-col gap-6 overflow-y-auto border-r border-sidebar-border bg-sidebar px-5 py-7">
           <div className="flex flex-col gap-2">
             <Logo />
             <LevelBadge />
           </div>
           <SidebarNav locale={locale} setLocale={setLocale} />
-          <div className="flex flex-col gap-3">
+          <div className="mt-auto flex flex-col gap-3">
             <DeckPicker value={deckId} onChange={setDeckId} />
-            <button
-              type="button"
-              onClick={() => setDark(!dark)}
-              className="flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-extrabold text-muted-foreground hover:bg-muted hover:text-foreground"
-              title={dark ? "Light mode" : "Dark mode"}
-            >
-              {dark ? (
-                <Sun className="size-4.5" strokeWidth={2.5} />
-              ) : (
-                <Moon className="size-4.5" strokeWidth={2.5} />
-              )}
-              {dark ? t("nav.light") : t("nav.dark")}
-            </button>
           </div>
         </aside>
 
         {/* Content */}
-        <main className="flex-1 px-8 py-8">
+        <main className="min-w-0 flex-1 px-6 py-8 sm:px-8">
           <Routes>
             <Route path="/" element={<ReviewPage deckId={deckId} />} />
             <Route path="/today" element={<TodayPage />} />

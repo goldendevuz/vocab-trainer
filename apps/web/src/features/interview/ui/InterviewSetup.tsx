@@ -109,7 +109,7 @@ export function InterviewSetup({
             value={customTopic}
             onChange={(e) => setCustomTopic(e.target.value)}
             placeholder={t("interview.customTopic")}
-            className="min-w-0 flex-1 rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none placeholder:text-muted-foreground"
+            className="min-w-0 flex-1 rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none transition-colors placeholder:text-muted-foreground hover:border-primary/30 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
           />
           <Button
             variant="secondary"

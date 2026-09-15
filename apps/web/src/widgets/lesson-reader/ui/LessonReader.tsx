@@ -4,6 +4,7 @@ import remarkGfm from "remark-gfm";
 import { useLesson, useMarkLessonRead } from "@/entities/curriculum";
 import { useI18n } from "@/shared/lib/i18n";
 import { Button } from "@/shared/ui/button";
+import { Loader } from "@/shared/ui/loader";
 
 const LEVEL_LABEL_KEYS: Record<string, string> = {
   A1: "learn.levelA1",
@@ -34,11 +35,13 @@ export function LessonReader({ moduleId }: { moduleId: string }) {
       <div className="flex flex-col gap-4">
         <Link
           to="/learn"
-          className="w-fit text-sm font-bold text-muted-foreground hover:text-foreground"
+          className="w-fit text-sm font-bold text-muted-foreground transition-colors hover:text-foreground"
         >
           {t("learn.backToMap")}
         </Link>
-        <p className="text-sm font-semibold text-muted-foreground">{t("common.loading")}</p>
+        <div className="rounded-3xl border border-border bg-card p-5">
+          <Loader label={t("common.loading")} />
+        </div>
       </div>
     );
   }
@@ -47,13 +50,13 @@ export function LessonReader({ moduleId }: { moduleId: string }) {
       <div className="flex flex-col gap-4">
         <Link
           to="/learn"
-          className="w-fit text-sm font-bold text-muted-foreground hover:text-foreground"
+          className="w-fit text-sm font-bold text-muted-foreground transition-colors hover:text-foreground"
         >
           {t("learn.backToMap")}
         </Link>
-        <p className="rounded-2xl bg-red-50 p-4 text-sm font-semibold text-red-700">
-          {t("misc.error")}
-        </p>
+        <div className="rounded-3xl border border-destructive/20 bg-destructive/5 p-5">
+          <p className="text-sm font-bold text-destructive">{t("misc.error")}</p>
+        </div>
       </div>
     );
   }
@@ -73,11 +76,11 @@ export function LessonReader({ moduleId }: { moduleId: string }) {
     <div className="flex flex-col gap-4">
       <Link
         to="/learn"
-        className="w-fit text-sm font-bold text-muted-foreground hover:text-foreground"
+        className="w-fit text-sm font-bold text-muted-foreground transition-colors hover:text-foreground"
       >
         {t("learn.backToMap")}
       </Link>
-      <header className="flex flex-col gap-3 rounded-3xl border border-border bg-card p-6">
+      <header className="flex flex-col gap-3 rounded-3xl border border-border bg-card p-6 shadow-sm shadow-foreground/[0.03]">
         <div className="flex flex-wrap items-center gap-2 text-xs font-extrabold">
           <span className="rounded-full bg-tint-lavender px-3 py-1 text-secondary-foreground">
             {t(LEVEL_LABEL_KEYS[meta.level] ?? meta.level)}
@@ -96,7 +99,7 @@ export function LessonReader({ moduleId }: { moduleId: string }) {
               <Link
                 key={section}
                 to={`/practice?section=${encodeURIComponent(section)}`}
-                className="rounded-full bg-primary/10 px-3 py-1 text-sm font-extrabold text-primary"
+                className="rounded-full bg-primary/10 px-3 py-1 text-sm font-extrabold text-primary transition-colors hover:bg-primary/20"
               >
                 {t("learn.practiceSection")}: {section}
               </Link>
@@ -107,7 +110,7 @@ export function LessonReader({ moduleId }: { moduleId: string }) {
           <div className="flex flex-wrap gap-2">
             <Link
               to={`/interview?topic=${encodeURIComponent(meta.interview_topic)}`}
-              className="rounded-full bg-primary/10 px-3 py-1 text-sm font-extrabold text-primary"
+              className="rounded-full bg-primary/10 px-3 py-1 text-sm font-extrabold text-primary transition-colors hover:bg-primary/20"
             >
               {t("learn.interviewTopic")}: {meta.interview_topic}
             </Link>
@@ -127,14 +130,14 @@ export function LessonReader({ moduleId }: { moduleId: string }) {
         </div>
       </header>
 
-      <article className="rounded-3xl border border-border bg-card p-6 sm:p-8">
+      <article className="rounded-3xl border border-border bg-card p-6 shadow-sm shadow-foreground/[0.03] sm:p-8">
         <div className="lesson-markdown">
           <Markdown remarkPlugins={[remarkGfm]}>{markdown}</Markdown>
         </div>
       </article>
 
       {meta.objectives.length > 0 && (
-        <section className="rounded-3xl border border-border bg-card p-6">
+        <section className="rounded-3xl border border-border bg-card p-6 shadow-sm shadow-foreground/[0.03]">
           <h2 className="mb-3 text-sm font-black uppercase tracking-wider text-primary">
             {t("learn.objectives")}
           </h2>
@@ -152,7 +155,7 @@ export function LessonReader({ moduleId }: { moduleId: string }) {
       )}
 
       {meta.skills.length > 0 && (
-        <section className="rounded-3xl border border-border bg-card p-6">
+        <section className="rounded-3xl border border-border bg-card p-6 shadow-sm shadow-foreground/[0.03]">
           <h2 className="mb-3 text-sm font-black uppercase tracking-wider text-primary">
             {t("learn.skills")}
           </h2>
@@ -170,7 +173,7 @@ export function LessonReader({ moduleId }: { moduleId: string }) {
       )}
 
       {meta.references.length > 0 && (
-        <section className="rounded-3xl border border-border bg-card p-6">
+        <section className="rounded-3xl border border-border bg-card p-6 shadow-sm shadow-foreground/[0.03]">
           <h2 className="mb-3 text-sm font-black uppercase tracking-wider text-primary">
             {t("learn.references")}
           </h2>

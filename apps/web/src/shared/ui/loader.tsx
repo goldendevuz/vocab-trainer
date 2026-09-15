@@ -15,7 +15,7 @@ export function Loader({
     >
       <span
         aria-hidden
-        className="size-4 shrink-0 animate-spin rounded-full border-2 border-muted-foreground/25 border-t-muted-foreground"
+        className="size-4 shrink-0 animate-spin rounded-full border-2 border-primary/20 border-t-primary"
       />
       <span>
         {label}

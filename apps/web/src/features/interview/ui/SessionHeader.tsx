@@ -49,14 +49,14 @@ export function SessionHeader({
         <button
           type="button"
           onClick={onRestart}
-          className="rounded-full border border-border bg-background px-3 py-1 text-xs font-semibold text-muted-foreground transition hover:text-foreground"
+          className="rounded-full border border-border bg-background px-3 py-1 text-xs font-semibold text-muted-foreground outline-none transition-colors hover:border-primary/30 hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50"
         >
           {t("interview.restart")}
         </button>
         <button
           type="button"
           onClick={onEnd}
-          className="inline-flex items-center gap-1 rounded-full bg-destructive/10 px-3 py-1 text-xs font-bold text-destructive transition hover:bg-destructive/20"
+          className="inline-flex items-center gap-1 rounded-full bg-destructive/10 px-3 py-1 text-xs font-bold text-destructive outline-none transition-colors hover:bg-destructive/20 focus-visible:ring-3 focus-visible:ring-ring/50"
         >
           <PhoneOff className="size-3.5" />
           {t("interview.finish")}

@@ -14,7 +14,7 @@ export function ReviewSkillsPage() {
         </div>
         <Link
           to="/learn"
-          className="shrink-0 rounded-full border border-border px-4 py-2 text-sm font-extrabold text-muted-foreground hover:text-foreground"
+          className="shrink-0 rounded-full border border-border px-4 py-2 text-sm font-extrabold text-muted-foreground transition-colors hover:border-primary/30 hover:text-foreground"
         >
           {t("learn.backToMap")}
         </Link>

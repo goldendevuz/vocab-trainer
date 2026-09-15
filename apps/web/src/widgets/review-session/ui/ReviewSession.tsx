@@ -6,6 +6,7 @@ import type { Card, Rating } from "@/shared/api";
 import { useI18n } from "@/shared/lib/i18n";
 import { useRevealShortcut } from "@/shared/lib/use-reveal-shortcut";
 import { Button } from "@/shared/ui/button";
+import { Loader } from "@/shared/ui/loader";
 
 const RATING_NAME_KEYS: Record<Rating, string> = {
   1: "review.ratingAgain",
@@ -50,8 +51,8 @@ export function ReviewSession({ deckId }: { deckId: number }) {
 
   if (plan === null) {
     return (
-      <div className="flex flex-col gap-4">
-        <p>{t("common.loading")}</p>
+      <div className="rounded-3xl border border-border bg-card p-5">
+        <Loader label={t("common.loading")} />
       </div>
     );
   }
@@ -61,7 +62,7 @@ export function ReviewSession({ deckId }: { deckId: number }) {
     const returnsIn = duePhrase(t, nextDue);
     return (
       <div className="flex flex-col gap-4">
-        <div className="flex flex-col items-center gap-6 rounded-3xl border border-border bg-card p-8 text-center">
+        <div className="flex flex-col items-center gap-6 rounded-3xl border border-border bg-card p-8 text-center shadow-sm shadow-foreground/[0.03]">
           <span className="text-5xl">🎉</span>
           <p className="text-2xl font-black tracking-tight">{t("review.summary")}</p>
           {returnsIn ? (

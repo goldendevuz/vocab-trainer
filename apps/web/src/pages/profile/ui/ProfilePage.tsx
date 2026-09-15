@@ -76,13 +76,17 @@ export function ProfilePage({ deckId }: { deckId: number | null }) {
 
   return (
     <div className="mx-auto flex max-w-2xl flex-col gap-6">
-      <header>
+      <header className="flex flex-col gap-1">
         <h2 className="text-2xl font-black tracking-tight text-foreground">{t("profile.title")}</h2>
       </header>
 
-      {deckId === null && <p className="text-muted-foreground">{t("profile.noDeck")}</p>}
+      {deckId === null && (
+        <p className="rounded-2xl border border-dashed border-border bg-card/60 p-4 text-sm font-bold text-muted-foreground">
+          {t("profile.noDeck")}
+        </p>
+      )}
 
-      <section className="flex flex-col gap-3 rounded-3xl border border-border bg-card p-6">
+      <section className="flex flex-col gap-3 rounded-3xl border border-border bg-card p-6 shadow-sm shadow-foreground/[0.03]">
         <div className="flex items-center gap-3">
           <label className="w-40 text-sm font-extrabold" htmlFor="profile-name">
             {t("profile.displayName")}
@@ -98,7 +102,7 @@ export function ProfilePage({ deckId }: { deckId: number | null }) {
           </Button>
         </div>
         <div className="flex flex-wrap gap-2">
-          <span className="rounded-full bg-tint-lavender px-4 py-2 text-sm font-extrabold">
+          <span className="rounded-full bg-tint-lavender px-4 py-2 text-sm font-extrabold text-secondary-foreground ring-1 ring-primary/10">
             {t("profile.level")}: {level ?? t("profile.levelNotAssessed")}
           </span>
           {!level && (
@@ -112,13 +116,13 @@ export function ProfilePage({ deckId }: { deckId: number | null }) {
       </section>
 
       <section className="grid grid-cols-2 gap-3">
-        <div className="flex flex-col gap-1 rounded-3xl border border-border bg-card p-6">
+        <div className="flex flex-col gap-1 rounded-3xl border border-border bg-card p-6 shadow-sm shadow-foreground/[0.03] transition-shadow hover:shadow-md hover:shadow-foreground/[0.05]">
           <span className="text-2xl font-black tabular-nums">
             {formatCount(totals.streak, locale)}
           </span>
           <span className="text-sm font-bold text-muted-foreground">{t("profile.streak")}</span>
         </div>
-        <div className="flex flex-col gap-1 rounded-3xl border border-border bg-card p-6">
+        <div className="flex flex-col gap-1 rounded-3xl border border-border bg-card p-6 shadow-sm shadow-foreground/[0.03] transition-shadow hover:shadow-md hover:shadow-foreground/[0.05]">
           <span className="text-2xl font-black tabular-nums">
             {formatCount(totals.reviews, locale)}
           </span>
@@ -128,7 +132,7 @@ export function ProfilePage({ deckId }: { deckId: number | null }) {
         </div>
       </section>
 
-      <section className="rounded-3xl border border-border bg-card p-6">
+      <section className="rounded-3xl border border-border bg-card p-6 shadow-sm shadow-foreground/[0.03]">
         <h3 className="text-sm font-black uppercase tracking-widest text-muted-foreground">
           {t("profile.cardsByState")}
         </h3>
@@ -136,7 +140,7 @@ export function ProfilePage({ deckId }: { deckId: number | null }) {
           {stateRows.map((row) => (
             <span
               key={row.label}
-              className="rounded-full bg-tint-blue px-4 py-2 text-sm font-extrabold"
+              className="rounded-full bg-tint-blue px-4 py-2 text-sm font-extrabold text-foreground/80 ring-1 ring-foreground/5"
             >
               {t(row.label)}: {formatCount(row.value, locale)}
             </span>
@@ -144,7 +148,7 @@ export function ProfilePage({ deckId }: { deckId: number | null }) {
         </div>
       </section>
 
-      <section className="rounded-3xl border border-border bg-card p-6">
+      <section className="rounded-3xl border border-border bg-card p-6 shadow-sm shadow-foreground/[0.03]">
         <h3 className="text-sm font-black uppercase tracking-widest text-muted-foreground">
           {t("profile.curriculum")}
         </h3>

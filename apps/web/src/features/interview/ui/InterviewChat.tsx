@@ -146,7 +146,7 @@ export function InterviewChat({ initialTopic }: { initialTopic?: string }) {
             }
           }}
           placeholder={t("interview.customTopic")}
-          className="min-w-0 flex-1 rounded-xl border border-border bg-card px-3 py-2 text-sm outline-none placeholder:text-muted-foreground"
+          className="min-w-0 flex-1 rounded-xl border border-border bg-card px-3 py-2 text-sm outline-none transition-colors placeholder:text-muted-foreground hover:border-primary/30 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
         />
         <Button
           onClick={() => {
@@ -199,8 +199,8 @@ export function InterviewChat({ initialTopic }: { initialTopic?: string }) {
                   onClick={() => handleSceneChange(s.value)}
                   className={
                     config.scene === s.value
-                      ? "rounded-full bg-white/90 px-2 py-1 text-[10px] font-bold text-black"
-                      : "rounded-full px-2 py-1 text-[10px] font-semibold text-white/80 hover:text-white"
+                      ? "rounded-full bg-white/90 px-2 py-1 text-[10px] font-bold text-black transition-colors"
+                      : "rounded-full px-2 py-1 text-[10px] font-semibold text-white/80 transition-colors hover:text-white"
                   }
                 >
                   {t(s.labelKey)}
@@ -260,7 +260,7 @@ export function InterviewChat({ initialTopic }: { initialTopic?: string }) {
               type="button"
               onClick={() => setMicMuted((v) => !v)}
               aria-label={t(micMuted ? "interview.callUnmute" : "interview.callMute")}
-              className={`flex h-12 w-12 items-center justify-center rounded-full transition ${
+              className={`flex h-12 w-12 items-center justify-center rounded-full outline-none transition-colors focus-visible:ring-3 focus-visible:ring-ring/50 ${
                 micMuted ? "bg-red-500 text-white" : "bg-muted text-foreground hover:bg-muted/70"
               }`}
             >
@@ -271,7 +271,7 @@ export function InterviewChat({ initialTopic }: { initialTopic?: string }) {
               type="button"
               onClick={() => setCameraOn((v) => !v)}
               aria-label={t(cameraOn ? "interview.callCameraOff" : "interview.callCameraOn")}
-              className="flex h-12 w-12 items-center justify-center rounded-full bg-muted text-foreground transition hover:bg-muted/70"
+              className="flex h-12 w-12 items-center justify-center rounded-full bg-muted text-foreground outline-none transition-colors hover:bg-muted/70 focus-visible:ring-3 focus-visible:ring-ring/50"
             >
               {cameraOn ? <Video className="h-5 w-5" /> : <VideoOff className="h-5 w-5" />}
             </button>
@@ -288,7 +288,7 @@ export function InterviewChat({ initialTopic }: { initialTopic?: string }) {
               type="button"
               onClick={handleEnd}
               aria-label={t("interview.callEnd")}
-              className="flex h-12 w-12 items-center justify-center rounded-full bg-red-600 text-white transition hover:bg-red-700"
+              className="flex h-12 w-12 items-center justify-center rounded-full bg-red-600 text-white outline-none transition-colors hover:bg-red-700 focus-visible:ring-3 focus-visible:ring-ring/50"
             >
               <PhoneOff className="h-5 w-5" />
             </button>

@@ -8,6 +8,7 @@ import { WordHintTooltip } from "@/features/word-hint";
 import type { Card } from "@/shared/api";
 import { useI18n } from "@/shared/lib/i18n";
 import { Button } from "@/shared/ui/button";
+import { Loader } from "@/shared/ui/loader";
 import { SpeakButton } from "@/shared/ui/speak-button";
 
 type Tab = "sentence" | "pronounce" | "drill";
@@ -63,7 +64,13 @@ export function PracticeSession({
     setDrillOpen(false);
   }, [currentCardId]);
 
-  if (isLoading && snapshot === null) return <p>{t("common.loading")}</p>;
+  if (isLoading && snapshot === null) {
+    return (
+      <div className="rounded-3xl border border-border bg-card p-5">
+        <Loader label={t("common.loading")} />
+      </div>
+    );
+  }
 
   const done = snapshot !== null && snapshot.length > 0 && index >= snapshot.length;
   if (done && snapshot !== null) {
@@ -73,11 +80,11 @@ export function PracticeSession({
       <div className="flex flex-col gap-4">
         <Link
           to="/"
-          className="w-fit text-sm font-bold text-muted-foreground hover:text-foreground"
+          className="w-fit text-sm font-bold text-muted-foreground transition-colors hover:text-foreground"
         >
           {t("nav.review")}
         </Link>
-        <div className="flex flex-col items-center gap-6 rounded-3xl border border-border bg-card p-8 text-center">
+        <div className="flex flex-col items-center gap-6 rounded-3xl border border-border bg-card p-8 text-center shadow-sm shadow-foreground/[0.03]">
           <span className="text-5xl">🎉</span>
           <p className="text-2xl font-black tracking-tight">{t("practice.summary")}</p>
           <p className="text-muted-foreground">
@@ -105,7 +112,7 @@ export function PracticeSession({
             </Button>
             <Link
               to="/"
-              className="rounded-full border border-border px-6 py-2 text-sm font-extrabold text-muted-foreground hover:text-foreground"
+              className="rounded-full border border-border px-6 py-2 text-sm font-extrabold text-muted-foreground transition-colors hover:text-foreground"
             >
               {t("nav.review")}
             </Link>
@@ -117,7 +124,11 @@ export function PracticeSession({
 
   const card = snapshot?.[index];
   if (!card) {
-    return <p className="text-lg text-muted-foreground">{t("practice.nothing")}</p>;
+    return (
+      <div className="flex flex-col items-center gap-1 rounded-3xl border border-dashed border-border bg-card/60 p-8 text-center">
+        <p className="text-sm font-bold text-muted-foreground">{t("practice.nothing")}</p>
+      </div>
+    );
   }
 
   const progress = snapshot.length > 0 ? ((index + 1) / snapshot.length) * 100 : 0;
@@ -138,7 +149,7 @@ export function PracticeSession({
       </div>
 
       {/* Word card */}
-      <div className="rounded-3xl border border-border bg-tint-lavender p-6 text-center">
+      <div className="rounded-3xl border border-border bg-tint-lavender p-6 text-center shadow-sm shadow-foreground/[0.03]">
         <div className="flex items-center justify-center gap-2">
           {card.id !== null ? (
             <WordHintTooltip cardId={card.id}>

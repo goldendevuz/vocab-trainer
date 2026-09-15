@@ -58,7 +58,11 @@ export function DeckPicker({
               ✕
             </Button>
           </div>
-          {createDeck.isError && <p role="alert">{t("header.deckCreateError")}</p>}
+          {createDeck.isError && (
+            <p role="alert" className="text-xs font-bold text-destructive">
+              {t("header.deckCreateError")}
+            </p>
+          )}
         </div>
       ) : (
         <Button

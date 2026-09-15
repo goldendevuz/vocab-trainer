@@ -56,7 +56,7 @@ export function RatingBar({
           key={rating}
           disabled={disabled}
           onClick={() => onRate(rating)}
-          className={`${classes}`}
+          className={`transition-colors ${classes}`}
         >
           {t(labelKey)} <span className="ml-1 opacity-70">{rating}</span>
         </Button>

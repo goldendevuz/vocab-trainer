@@ -8,7 +8,9 @@ export function InterviewSpeakingPage() {
       <p className="text-xs font-black uppercase tracking-widest text-primary">
         {t("speaking.title")}
       </p>
-      <h2 className="text-2xl font-black tracking-tight">{t("speaking.subtitle")}</h2>
+      <h2 className="text-2xl font-black tracking-tight text-foreground">
+        {t("speaking.subtitle")}
+      </h2>
       <PhrasePractice />
     </div>
   );

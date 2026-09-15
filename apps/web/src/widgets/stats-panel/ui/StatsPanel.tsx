@@ -2,6 +2,7 @@ import { useStats } from "@/entities/stats";
 import { formatCount } from "@/shared/lib/format";
 import { useI18n } from "@/shared/lib/i18n";
 import { Card, CardContent } from "@/shared/ui/card";
+import { Loader } from "@/shared/ui/loader";
 
 function Tile({
   label,
@@ -15,7 +16,9 @@ function Tile({
   tint?: string;
 }) {
   return (
-    <Card className={`flex-1 border-border ${tint ?? "bg-card"}`}>
+    <Card
+      className={`min-w-[140px] flex-1 border-border transition-transform hover:-translate-y-0.5 ${tint ?? "bg-card"}`}
+    >
       <CardContent className="py-6 text-center">
         <div className="text-3xl font-black tracking-tight">
           {icon && <span className="mr-1">{icon}</span>}
@@ -30,14 +33,19 @@ function Tile({
 export function StatsPanel({ deckId }: { deckId: number }) {
   const { t, locale } = useI18n();
   const stats = useStats(deckId);
-  if (!stats.data) return <p>{t("common.loading")}</p>;
+  if (!stats.data)
+    return (
+      <div className="rounded-3xl border border-border bg-card p-6">
+        <Loader label={t("common.loading")} />
+      </div>
+    );
 
   const maxActivity = Math.max(...stats.data.activity.map((a) => Number(a.count)), 1);
   const count = (n: number) => formatCount(n, locale);
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex gap-3">
+      <div className="flex flex-wrap gap-3">
         <Tile
           label={t("stats.dueToday")}
           value={count(stats.data.due_today)}
@@ -59,7 +67,7 @@ export function StatsPanel({ deckId }: { deckId: number }) {
       </div>
 
       {/* FSRS breakdown */}
-      <div className="rounded-3xl border border-border bg-card p-4">
+      <div className="rounded-3xl border border-border bg-card p-4 shadow-sm shadow-foreground/[0.03]">
         <p className="mb-3 text-xs font-black uppercase tracking-wider text-primary">
           {t("stats.cardsByState")}
         </p>
@@ -81,7 +89,7 @@ export function StatsPanel({ deckId }: { deckId: number }) {
 
       {/* Activity chart */}
       {stats.data.activity.length > 0 && (
-        <div className="rounded-3xl border border-border bg-card p-4">
+        <div className="rounded-3xl border border-border bg-card p-4 shadow-sm shadow-foreground/[0.03]">
           <p className="mb-2 text-xs font-black uppercase tracking-wider text-primary">
             {t("stats.last7Days")}
           </p>
@@ -89,7 +97,7 @@ export function StatsPanel({ deckId }: { deckId: number }) {
             {stats.data.activity.map((a) => (
               <div key={String(a.date)} className="flex flex-1 flex-col items-center gap-1">
                 <div
-                  className="w-full rounded-t-lg bg-primary transition-all"
+                  className="w-full rounded-t-lg bg-primary transition-all hover:bg-primary/80"
                   style={{ height: `${(Number(a.count) / maxActivity) * 64}px`, minHeight: 4 }}
                 />
                 <span className="text-xs text-muted-foreground">{String(a.date).slice(5)}</span>

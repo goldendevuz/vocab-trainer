@@ -2,6 +2,7 @@ import { Flame } from "lucide-react";
 import { useProgress } from "@/entities/progress";
 import { formatCount } from "@/shared/lib/format";
 import { useI18n } from "@/shared/lib/i18n";
+import { Loader } from "@/shared/ui/loader";
 
 const LEVEL_LABEL_KEYS: Record<string, string> = {
   A1: "learn.levelA1",
@@ -17,16 +18,24 @@ export function ProgressDashboard() {
   const report = useProgress();
 
   if (report.isLoading) {
-    return <p className="text-sm font-bold text-muted-foreground">{t("progress.loading")}</p>;
+    return (
+      <section className="rounded-3xl border border-border bg-card p-5 shadow-sm shadow-foreground/[0.03]">
+        <Loader label={t("progress.loading")} />
+      </section>
+    );
   }
   if (report.isError || !report.data) {
-    return <p className="text-sm font-bold text-destructive">{t("progress.error")}</p>;
+    return (
+      <section className="rounded-3xl border border-destructive/20 bg-destructive/5 p-5">
+        <p className="text-sm font-bold text-destructive">{t("progress.error")}</p>
+      </section>
+    );
   }
 
   const { levels, overall_percent, streak } = report.data;
 
   return (
-    <section className="rounded-3xl border border-border bg-card p-5">
+    <section className="rounded-3xl border border-border bg-card p-5 shadow-sm shadow-foreground/[0.03] transition-shadow hover:shadow-md hover:shadow-foreground/[0.05]">
       <div className="flex items-center justify-between gap-3">
         <div className="flex flex-col gap-1">
           <h3 className="text-lg font-black tracking-tight text-foreground">
@@ -36,12 +45,12 @@ export function ProgressDashboard() {
         </div>
         <div className="flex shrink-0 items-center gap-3">
           {streak > 0 && (
-            <span className="flex items-center gap-1 rounded-full bg-orange-100 px-3 py-1 text-sm font-extrabold text-orange-700">
+            <span className="flex items-center gap-1 rounded-full bg-orange-100 px-3 py-1 text-sm font-extrabold text-orange-700 ring-1 ring-orange-200/70">
               <Flame size={14} />
               {formatCount(streak, locale)} {t("progress.streak")}
             </span>
           )}
-          <span className="rounded-full bg-primary/10 px-3 py-1 text-sm font-extrabold text-primary">
+          <span className="rounded-full bg-primary/10 px-3 py-1 text-sm font-extrabold text-primary ring-1 ring-primary/15">
             {t("progress.overall")} · {overall_percent}%
           </span>
         </div>
@@ -63,7 +72,7 @@ export function ProgressDashboard() {
               </div>
               <div className="h-2 overflow-hidden rounded-full bg-muted">
                 <div
-                  className="h-full rounded-full bg-primary transition-all"
+                  className="h-full rounded-full bg-primary transition-all duration-500 ease-out"
                   style={{ width: `${percent}%` }}
                 />
               </div>

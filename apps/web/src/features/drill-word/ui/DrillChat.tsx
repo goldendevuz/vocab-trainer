@@ -44,7 +44,7 @@ export function DrillChat({
   };
 
   return (
-    <div className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-4">
+    <div className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-4 shadow-sm shadow-foreground/[0.03]">
       <div className="flex items-center justify-between">
         <span className="font-extrabold">
           {t("practice.drillTitle")}: <span className="text-primary">{word}</span>
@@ -64,7 +64,7 @@ export function DrillChat({
         {messages.map((m) => (
           <HoverableSentence key={m.id} text={m.text}>
             <div
-              className={`max-w-[85%] rounded-lg px-3 py-2 ${
+              className={`max-w-[85%] rounded-2xl px-3 py-2 shadow-sm shadow-foreground/[0.03] ${
                 m.role === "user"
                   ? "ml-auto bg-primary text-primary-foreground"
                   : "mr-auto bg-background text-foreground"

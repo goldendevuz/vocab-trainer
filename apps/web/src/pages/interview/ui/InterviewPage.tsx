@@ -14,7 +14,9 @@ export function InterviewPage() {
       <p className="text-xs font-black uppercase tracking-widest text-primary">
         {t("interview.title")}
       </p>
-      <h2 className="text-2xl font-black tracking-tight">{t("interview.subtitle")}</h2>
+      <h2 className="text-2xl font-black tracking-tight text-foreground">
+        {t("interview.subtitle")}
+      </h2>
       <InterviewChat initialTopic={initialTopic} />
     </div>
   );
